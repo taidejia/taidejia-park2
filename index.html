@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PARK2 都會輕美力智慧補給站提案</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Industrial (Sand, Stone, Muted Orange) 
+         Use bg-stone-50 for base, orange-500 for accents to match the machine and PARK2's desert/industrial vibe.
+    -->
+
+    <!-- Application Structure Plan: 
+         1. Hero Section: Immediate value proposition and mood setting.
+         2. Analysis Dashboard: Interactive analysis of PARK2's audience and how we solve their pain points (Click-to-reveal).
+         3. Product Showcase: A gallery where users select products to see specific nutritional data visualized via Charts (Interaction: Selection -> Dynamic Content).
+         4. Operational Tech: A schematic view of the machine highlighting "Smart" features (Hover interactions).
+         5. ROI Projection: Charts showing expected engagement and value.
+         6. Contact/CTA: Clear next steps.
+         This structure moves from "Why" (Audience) to "What" (Product) to "How" (Operations) to "Future" (Value).
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Audience Needs: Radar Chart to show the overlap between PARK2 user interests and our product features.
+         2. Product Data: Doughnut Chart for LalaLife macros (Protein vs Sugar) to prove "Healthy".
+         3. Service Hours: Line chart comparing Mall hours vs Vending availability (24H value).
+         4. Interaction: Vanilla JS used for tab switching, modal-like product details, and chart updates.
+    -->
+
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .product-card.active {
+            border-color: #f97316; /* orange-500 */
+            background-color: #fff7ed; /* orange-50 */
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800 antialiased selection:bg-orange-200">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-stone-900/90 backdrop-blur-md text-white z-50 shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="font-bold text-xl tracking-wider text-orange-500">TAIDEJIA x PARK2</div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#hero" class="hover:text-orange-400 transition-colors">首頁</a>
+                    <a href="#analysis" class="hover:text-orange-400 transition-colors">客群分析</a>
+                    <a href="#products" class="hover:text-orange-400 transition-colors">產品陣容</a>
+                    <a href="#operations" class="hover:text-orange-400 transition-colors">營運管理</a>
+                    <a href="#value" class="hover:text-orange-400 transition-colors">預期效益</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-32 pb-20 px-4 min-h-screen flex items-center justify-center bg-stone-800 overflow-hidden">
+        <!-- Abstract Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full opacity-20">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-orange-500 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-stone-500 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-4xl mx-auto text-center z-10">
+            <div class="inline-block mb-4 px-3 py-1 border border-orange-500 text-orange-400 text-xs tracking-widest rounded-full uppercase">Proposal 2024</div>
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                都會輕美力<br>
+                <span class="text-orange-500">智慧補給站</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-stone-300 mb-10 font-light">
+                24H 機能補給 · 重新定義大人系的公園生活
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#analysis" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg shadow-orange-500/30">
+                    探索提案內容
+                </a>
+                <a href="#contact" class="border border-stone-500 text-stone-300 hover:text-white hover:border-white px-8 py-3 rounded-lg font-medium transition-all">
+                    聯繫我們
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Analysis Dashboard (The "Why") -->
+    <section id="analysis" class="py-20 px-4 bg-stone-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-stone-800 mb-4 border-l-4 border-orange-500 pl-4">場域客群深度解析</h2>
+                <p class="text-stone-600 max-w-2xl">
+                    PARK2 草悟廣場匯聚了追求生活質感的獨特客群。本區塊分析我們如何透過精準選品，完美填補現有零售服務的缺口。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Text/Interactive Cards -->
+                <div class="space-y-4">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer border-l-4 border-transparent hover:border-orange-500 group" onclick="updateAnalysis('sports')">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-stone-800 group-hover:text-orange-600">🏃 運動/夜跑族</h3>
+                                <p class="text-sm text-stone-500 mt-1">追求高效能與低負擔</p>
+                            </div>
+                            <span class="text-2xl opacity-50">⚡</span>
+                        </div>
+                        <div class="mt-4 text-sm text-stone-600 hidden md:block">
+                            <span class="font-semibold">痛點：</span> 運動完找不到健康的即時補給。<br>
+                            <span class="font-semibold text-orange-600">解方：</span> 20g+ 高蛋白奶昔，隨買隨喝。
+                        </div>
+                    </div>
+                    
+                    <!-- Card 2 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer border-l-4 border-transparent hover:border-pink-500 group" onclick="updateAnalysis('trendy')">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-stone-800 group-hover:text-pink-600">📸 潮流/約會族</h3>
+                                <p class="text-sm text-stone-500 mt-1">重視顏值與話題性</p>
+                            </div>
+                            <span class="text-2xl opacity-50">✨</span>
+                        </div>
+                        <div class="mt-4 text-sm text-stone-600 hidden md:block">
+                            <span class="font-semibold">痛點：</span> 一般飲料熱量高且缺乏話題。<br>
+                            <span class="font-semibold text-pink-600">解方：</span> 韓系潮飲 & 美顏膠原蛋白。
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer border-l-4 border-transparent hover:border-green-500 group" onclick="updateAnalysis('foodie')">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-lg text-stone-800 group-hover:text-green-600">🍽️ 美食饕客</h3>
+                                <p class="text-sm text-stone-500 mt-1">享受美食同時管理體態</p>
+                            </div>
+                            <span class="text-2xl opacity-50">🥗</span>
+                        </div>
+                        <div class="mt-4 text-sm text-stone-600 hidden md:block">
+                            <span class="font-semibold">痛點：</span> 聚餐後易有罪惡感與負擔。<br>
+                            <span class="font-semibold text-green-600">解方：</span> 暢纖凍 & 代謝膠囊。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Radar Chart -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <div class="chart-container">
+                        <canvas id="audienceRadarChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-stone-400 mt-4">點擊左側卡片切換數據重點</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Product Lineup (The "What") -->
+    <section id="products" class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-orange-500 font-bold tracking-widest text-sm uppercase">Product Lineup</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mt-2">四大機能單品</h2>
+                <p class="text-stone-500 mt-4">如精品超市般的選品邏輯，打造「輕美力」補給生態</p>
+            </div>
+
+            <!-- Product Selector -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <button onclick="selectProduct('lala')" id="btn-lala" class="product-card active p-4 rounded-xl border-2 border-stone-100 hover:border-orange-200 transition-all text-center">
+                    <div class="text-3xl mb-2">🥤</div>
+                    <div class="font-bold text-stone-800">LalaLife</div>
+                    <div class="text-xs text-stone-500">巧口奶昔</div>
+                </button>
+                <button onclick="selectProduct('nippi')" id="btn-nippi" class="product-card p-4 rounded-xl border-2 border-stone-100 hover:border-orange-200 transition-all text-center">
+                    <div class="text-3xl mb-2">💎</div>
+                    <div class="font-bold text-stone-800">NIPPI</div>
+                    <div class="text-xs text-stone-500">膠原蛋白</div>
+                </button>
+                <button onclick="selectProduct('emi')" id="btn-emi" class="product-card p-4 rounded-xl border-2 border-stone-100 hover:border-orange-200 transition-all text-center">
+                    <div class="text-3xl mb-2">💊</div>
+                    <div class="font-bold text-stone-800">EMI 抑覓</div>
+                    <div class="text-xs text-stone-500">代謝膠囊</div>
+                </button>
+                <button onclick="selectProduct('jelly')" id="btn-jelly" class="product-card p-4 rounded-xl border-2 border-stone-100 hover:border-orange-200 transition-all text-center">
+                    <div class="text-3xl mb-2">🍑</div>
+                    <div class="font-bold text-stone-800">Beauty</div>
+                    <div class="text-xs text-stone-500">暢纖凍</div>
+                </button>
+            </div>
+
+            <!-- Dynamic Product Detail View -->
+            <div class="bg-stone-50 rounded-3xl p-8 md:p-12 shadow-inner">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Details -->
+                    <div id="product-details" class="space-y-6">
+                        <!-- Content populated by JS -->
+                    </div>
+                    
+                    <!-- Visualization -->
+                    <div class="bg-white rounded-2xl p-6 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-stone-700">關鍵數據分析</h4>
+                            <span class="text-xs bg-stone-100 px-2 py-1 rounded text-stone-500">每份含量</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="productStatChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Operations & Tech (The "How") -->
+    <section id="operations" class="py-20 px-4 bg-stone-900 text-stone-300">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-white mb-6">智慧營運・美學整合</h2>
+                    <p class="mb-8 leading-relaxed">
+                        我們不只是擺放一台機器，而是提供一套完整的智慧零售解決方案。機台外觀將客製化為<span class="text-orange-500 font-bold">「暖陽橙色」</span>，完美融入 PARK2 地景。
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-orange-500 font-bold">24</div>
+                            <div>
+                                <h3 class="text-white font-bold">全時段服務</h3>
+                                <p class="text-sm">深夜、清晨不打烊，服務傳統店鋪無法覆蓋的時段。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-orange-500 font-bold">QC</div>
+                            <div>
+                                <h3 class="text-white font-bold">品質監控</h3>
+                                <p class="text-sm">專業溫控系統與每日效期巡檢，堅持先進先出原則。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center text-orange-500 font-bold">Pay</div>
+                            <div>
+                                <h3 class="text-white font-bold">多元支付</h3>
+                                <p class="text-sm">支援 LINE Pay、Apple Pay、悠遊卡，打造無現金體驗。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abstract Machine Visualizer -->
+                <div class="relative bg-stone-800 rounded-2xl p-8 border border-stone-700">
+                    <div class="text-center mb-4 text-xs tracking-widest uppercase text-stone-500">Machine Schematic</div>
+                    <!-- CSS Drawing of Vending Machine -->
+                    <div class="mx-auto w-64 h-96 bg-orange-100 rounded-lg relative shadow-2xl border-4 border-stone-600 overflow-hidden group">
+                        <!-- Top Banner -->
+                        <div class="absolute top-0 left-0 w-full h-16 bg-orange-500 flex items-center justify-center">
+                            <span class="text-white font-bold text-lg tracking-wider">TAIDEJIA</span>
+                        </div>
+                        <!-- Window -->
+                        <div class="absolute top-20 left-4 right-20 bottom-32 bg-stone-800/10 border border-stone-300 rounded inner-shadow backdrop-blur-sm flex flex-col justify-end p-2">
+                             <div class="w-full h-1 bg-stone-300 mb-2"></div>
+                             <div class="w-full h-1 bg-stone-300 mb-2"></div>
+                             <div class="w-full h-1 bg-stone-300"></div>
+                        </div>
+                        <!-- Side Control Panel -->
+                        <div class="absolute top-20 right-2 w-14 bottom-32 bg-stone-200 rounded border border-stone-300 flex flex-col items-center py-2 space-y-2">
+                            <div class="w-10 h-16 bg-black rounded cursor-pointer hover:ring-2 ring-orange-400 transition-all" title="Interactive Screen"></div>
+                            <div class="w-8 h-8 bg-stone-400 rounded-full cursor-pointer hover:bg-green-500 transition-all" title="Payment Sensor"></div>
+                        </div>
+                        <!-- Pickup -->
+                        <div class="absolute bottom-4 left-4 right-4 h-20 bg-stone-300 rounded-t-lg border-t-4 border-stone-400 flex items-center justify-center">
+                            <span class="text-stone-500 font-bold text-xl tracking-widest">PUSH</span>
+                        </div>
+                        
+                        <!-- Interactive Tooltip Overlay (Visible on hover of specific areas in a real app, simplified here) -->
+                        <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                            <p class="text-white font-bold">Smart Vending Unit</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-center space-x-4 text-xs text-stone-400">
+                        <span class="flex items-center"><span class="w-2 h-2 bg-orange-500 rounded-full mr-2"></span>Custom Color</span>
+                        <span class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Eco Power</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Value & CTA -->
+    <section id="value" class="py-20 px-4 bg-white relative">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-stone-800 mb-12">預期效益與合作願景</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="p-6 bg-stone-50 rounded-xl">
+                    <div class="text-4xl mb-4">🔥</div>
+                    <h3 class="font-bold text-xl mb-2">話題引流</h3>
+                    <p class="text-sm text-stone-500">獨家韓系潮飲創造社群打卡熱點，為場域帶來免費自然流量。</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-xl">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h3 class="font-bold text-xl mb-2">服務升級</h3>
+                    <p class="text-sm text-stone-500">填補深夜與清晨的服務真空，提供更完整的遊客體驗。</p>
+                </div>
+                <div class="p-6 bg-stone-50 rounded-xl">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="font-bold text-xl mb-2">長期共贏</h3>
+                    <p class="text-sm text-stone-500">提供具競爭力的租賃方案，建立穩定的合作夥伴關係。</p>
+                </div>
+            </div>
+
+            <!-- Contact Card -->
+            <div id="contact" class="bg-stone-900 rounded-2xl p-8 md:p-12 shadow-2xl text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-orange-500 rounded-full blur-3xl opacity-20 transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <h3 class="text-2xl font-bold mb-6">準備好為 PARK2 注入新活力了嗎？</h3>
+                <p class="mb-8 text-stone-300">我們已準備好完整的合規文件（含食品標示與保險證明），期待與貴單位進一步洽談。</p>
+                
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 border-t border-stone-700 pt-8">
+                    <div class="text-left">
+                        <div class="text-xs text-stone-500 uppercase tracking-wider mb-1">Company</div>
+                        <div class="font-bold text-lg">泰德佳有限公司</div>
+                    </div>
+                    <div class="hidden md:block w-px h-12 bg-stone-700"></div>
+                    <div class="text-left">
+                        <div class="text-xs text-stone-500 uppercase tracking-wider mb-1">Contact Person</div>
+                        <div class="font-bold text-lg">黃家瑮 / 市場經理</div>
+                    </div>
+                    <div class="hidden md:block w-px h-12 bg-stone-700"></div>
+                    <div class="text-left">
+                        <div class="text-xs text-stone-500 uppercase tracking-wider mb-1">Details</div>
+                        <div class="font-bold text-lg">連絡電話0977564006 / Email:taidejia1111@gmail.com</div>
+                    </div>
+                </div>
+                
+                <button class="mt-10 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-10 rounded-full transition-all shadow-lg hover:shadow-orange-500/50" onclick="alert('感謝您的關注！請聯絡我們以安排實地場勘。')">
+                    望有機會合作
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-stone-950 text-stone-600 py-8 text-center text-sm">
+        <p>&copy; 2024 泰德佳有限公司. All Rights Reserved.</p>
+        <p class="mt-2 text-xs">Designed for PARK2 Caowu Square Proposal.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- API & Auth Constants (for LLM Feature) ---
+        // 這些變數與 AI 模型相關，但不會在最終介面上顯示，請放心。
+        const apiKey = ""; 
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        // --- Data Definitions ---
+        const products = {
+            lala: {
+                name: "LalaLife 2.0 巧口奶昔",
+                tagline: "韓系代餐潮飲",
+                description: "韓國熱銷升級版，首創雙認證。每份含高達 20g+ 蛋白質、高膳食纖維、玻尿酸，且減糖 80%。運動後補給的最佳選擇。",
+                tags: ["高蛋白 20g", "低糖", "飽足感"],
+                primaryIngredient: "高蛋白代餐奶昔 (20g Protein)", // Added for LLM prompt
+                chartType: 'doughnut',
+                chartData: {
+                    labels: ['蛋白質', '膳食纖維', '糖', '其他'],
+                    datasets: [{
+                        data: [20, 6, 2, 32],
+                        backgroundColor: ['#f97316', '#84cc16', '#ef4444', '#e7e5e4'],
+                        borderWidth: 0
+                    }]
+                },
+                chartLabel: "營養成分佔比 (g)"
+            },
+            nippi: {
+                name: "NIPPI Collagen 白金版",
+                tagline: "日系美顏聖品",
+                description: "日本膠原蛋白大廠全新升級。粉質細緻，無腥味，能快速補充美麗能量。適合愛美女性的日常隨手保養。",
+                tags: ["100% 純度", "無腥味", "日本進口"],
+                primaryIngredient: "NIPPI 膠原蛋白", // Added for LLM prompt
+                chartType: 'bar',
+                chartData: {
+                    labels: ['一般膠原', 'NIPPI白金版'],
+                    datasets: [{
+                        label: '吸收率指數',
+                        data: [65, 95],
+                        backgroundColor: ['#d6d3d1', '#3b82f6'],
+                        borderRadius: 4
+                    }]
+                },
+                chartLabel: "吸收效率比較"
+            },
+            emi: {
+                name: "EMI 抑覓 代謝膠囊",
+                tagline: "體態管理專家",
+                description: "美國進口原料，含紅花籽油 (CLA) 與藤黃果萃取物。聚餐大吃前後的急救補給，注重線條管理的必備夥伴。",
+                tags: ["CLA", "藤黃果", "維生素B"],
+                primaryIngredient: "代謝膠囊 (CLA/藤黃果)", // Added for LLM prompt
+                chartType: 'bar',
+                chartData: {
+                    labels: ['餐前', '餐後', '運動前'],
+                    datasets: [{
+                        label: '建議食用時機效益',
+                        data: [80, 70, 95],
+                        backgroundColor: '#a855f7',
+                        borderRadius: 4
+                    }]
+                },
+                chartLabel: "代謝輔助效益"
+            },
+            jelly: {
+                name: "Beauty filter 暢纖凍",
+                tagline: "順暢輕纖維",
+                description: "台灣製造，結合多種蔬果酵素與膳食纖維。條狀果凍包裝口感佳。特別說明：我們提供合規的單份中文標籤，確保食安無虞。",
+                tags: ["蔬果酵素", "Fibersol-2", "順暢"],
+                primaryIngredient: "暢纖凍 (蔬果酵素/膳食纖維)", // Added for LLM prompt
+                chartType: 'pie',
+                chartData: {
+                    labels: ['蔬果酵素', '膳食纖維', '水分', '果汁'],
+                    datasets: [{
+                        data: [30, 25, 35, 10],
+                        backgroundColor: ['#ec4899', '#f97316', '#3b82f6', '#fbbf24'],
+                        borderWidth: 0
+                    }]
+                },
+                chartLabel: "主要成分構成"
+            }
+        };
+
+        const audienceData = {
+            sports: {
+                label: '運動族群需求',
+                data: [95, 40, 85, 90, 60] // Protein, Social, Health, Convenience, Taste
+            },
+            trendy: {
+                label: '潮流族群需求',
+                data: [50, 95, 70, 80, 90]
+            },
+            foodie: {
+                label: '美食族群需求',
+                data: [30, 80, 60, 70, 100]
+            }
+        };
+
+        // --- Chart Instances ---
+        let productChartInstance = null;
+        let radarChartInstance = null;
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Radar Chart
+            initRadarChart();
+            // Load Default Product
+            selectProduct('lala');
+        });
+
+        // --- Helper Function: Exponential Backoff for API Calls ---
+        async function exponentialBackoffFetch(url, options, maxRetries = 5) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return response;
+                    }
+                    if (response.status === 429 && i < maxRetries - 1) { // 429 Too Many Requests
+                        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                } catch (error) {
+                    if (i === maxRetries - 1) {
+                        throw error;
+                    }
+                    // Continue to next retry
+                }
+            }
+        }
+
+        // --- LLM Feature Function ---
+        async function generateFunFact(productName, primaryIngredient) {
+            const llmResultDiv = document.getElementById('llm-result');
+            const llmButton = document.getElementById('llm-button');
+            
+            llmResultDiv.innerHTML = '<div class="text-sm text-stone-500 flex items-center justify-center py-4"><svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-orange-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 正在為您生成話題亮點...</div>';
+            llmButton.disabled = true;
+
+            const systemPrompt = `您是一位頂尖的潮流健康顧問。請根據以下產品的核心成分，提供一個簡潔、有趣且適合社群分享的「輕美力使用秘訣」或「成分冷知識」。請用繁體中文，且回覆內容必須是一段話，字數限制在 50 字以內，語氣要活潑。`;
+            const userQuery = `請為以下產品的核心成分：${primaryIngredient}，提供一個獨特的使用秘訣。產品名稱：${productName}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await exponentialBackoffFetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (generatedText) {
+                    llmResultDiv.innerHTML = `
+                        <div class="p-4 bg-orange-100 border-l-4 border-orange-500 rounded-lg shadow-inner">
+                            <p class="font-bold text-orange-700 mb-1">✨ 輕美力秘訣：</p>
+                            <p class="text-stone-700 text-sm">${generatedText}</p>
+                        </div>
+                    `;
+                } else {
+                    llmResultDiv.innerHTML = '<div class="text-sm text-red-500 py-4">抱歉，無法生成秘訣，請稍後再試。</div>';
+                }
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                llmResultDiv.innerHTML = '<div class="text-sm text-red-500 py-4">連線錯誤，請檢查您的網路或稍後重試。</div>';
+            } finally {
+                llmButton.disabled = false;
+            }
+        }
+
+        // --- Core Application Functions ---
+
+        function initRadarChart() {
+            const ctx = document.getElementById('audienceRadarChart').getContext('2d');
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['蛋白質/機能', '社群話題性', '健康低負擔', '便利性', '美味口感'],
+                    datasets: [{
+                        label: 'PARK2 運動族群需求匹配度',
+                        data: audienceData.sports.data,
+                        fill: true,
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)', // Orange
+                        borderColor: 'rgb(249, 115, 22)',
+                        pointBackgroundColor: 'rgb(249, 115, 22)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(249, 115, 22)'
+                    }]
+                },
+                options: {
+                    elements: { line: { borderWidth: 3 } },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e5e7eb' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: { font: { size: 12, family: "'Noto Sans TC', sans-serif" } },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    maintainAspectRatio: false,
+                    responsive: true
+                }
+            });
+        }
+
+        function updateAnalysis(type) {
+            const config = audienceData[type];
+            let color = '249, 115, 22'; // Default Orange
+            if(type === 'trendy') color = '236, 72, 153'; // Pink
+            if(type === 'foodie') color = '34, 197, 94'; // Green
+
+            radarChartInstance.data.datasets[0].label = `PARK2 ${config.label}匹配度`;
+            radarChartInstance.data.datasets[0].data = config.data;
+            radarChartInstance.data.datasets[0].backgroundColor = `rgba(${color}, 0.2)`;
+            radarChartInstance.data.datasets[0].borderColor = `rgb(${color})`;
+            radarChartInstance.data.datasets[0].pointBackgroundColor = `rgb(${color})`;
+            radarChartInstance.data.datasets[0].pointHoverBorderColor = `rgb(${color})`;
+            radarChartInstance.update();
+        }
+
+        function selectProduct(key) {
+            const data = products[key];
+            
+            // Update UI State
+            document.querySelectorAll('.product-card').forEach(el => {
+                el.classList.remove('active', 'border-orange-500', 'bg-orange-50');
+                el.classList.add('border-stone-100');
+            });
+            const btn = document.getElementById(`btn-${key}`);
+            btn.classList.add('active', 'border-orange-500', 'bg-orange-50');
+            btn.classList.remove('border-stone-100');
+
+            // Update Content
+            const detailsContainer = document.getElementById('product-details');
+            
+            // Create Tag HTML
+            const tagsHtml = data.tags.map(tag => 
+                `<span class="inline-block bg-white border border-orange-200 rounded-full px-3 py-1 text-xs font-semibold text-orange-600 mr-2 shadow-sm">${tag}</span>`
+            ).join('');
+
+            detailsContainer.innerHTML = `
+                <div class="animate-fade-in">
+                    <div class="text-orange-500 font-bold tracking-widest uppercase text-xs mb-2">${data.tagline}</div>
+                    <h3 class="text-3xl font-bold text-stone-800 mb-4">${data.name}</h3>
+                    <div class="mb-6">${tagsHtml}</div>
+                    <p class="text-stone-600 leading-relaxed text-lg">${data.description}</p>
+                    
+                    <!-- LLM Feature: Fun Fact Generator -->
+                    <div class="mt-8 pt-6 border-t border-stone-200">
+                        <button id="llm-button" 
+                            class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full text-sm transition-all flex items-center shadow-md hover:shadow-lg"
+                            onclick="generateFunFact('${data.name}', '${data.primaryIngredient}')"
+                        >
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4M17 6h4M16 17h-4m-4 0v4m-3-12h4m-4-4h4m-4 0v4m14-8v4m-4-4h4m-4 0v4m-3-12h4m-4-4h4m-4 0v4m14-8v4m-4-4h4m-4 0v4M7 21a2 2 0 01-2-2v-3a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2H7zM15 21a2 2 0 01-2-2v-3a2 2 0 012-2h3a2 2 0 012 2v3a2 2 0 01-2 2h-3zM7 11a2 2 0 01-2-2V7a2 2 0 012-2h3a2 2 0 012 2v2a2 2 0 01-2 2H7zM15 11a2 2 0 01-2-2V7a2 2 0 012-2h3a2 2 0 012 2v2a2 2 0 01-2 2h-3z"></path></svg>
+                            ✨ 獲取輕美力秘訣
+                        </button>
+                        <div id="llm-result" class="mt-4 min-h-[50px]">
+                            <p class="text-xs text-stone-400">點擊上方按鈕，由 AI 生成此產品的社群亮點或使用小秘訣。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 flex items-center text-sm text-stone-400">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        點擊右側圖表可查看詳細數據
+                    </div>
+                </div>
+            `;
+
+            // Update Chart
+            updateProductChart(data);
+        }
+
+        function updateProductChart(data) {
+            const ctx = document.getElementById('productStatChart').getContext('2d');
+            
+            if (productChartInstance) {
+                productChartInstance.destroy();
+            }
+
+            productChartInstance = new Chart(ctx, {
+                type: data.chartType,
+                data: data.chartData,
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw + (data.chartType === 'doughnut' || data.chartType === 'pie' ? 'g' : (data.chartType === 'bar' ? ' %' : ''));
+                                }
+                            }
+                        }
+                    },
+                    scales: data.chartType === 'bar' ? {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    } : {}
+                }
+            });
+        }
+    </script>
+</body>
+</html>
